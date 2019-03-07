@@ -5,6 +5,13 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material';
 import {MatListModule} from '@angular/material/list';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [],
@@ -14,7 +21,14 @@ import {MatListModule} from '@angular/material/list';
     FlexLayoutModule,
     MatIconModule,
     MatButtonModule,
-    MatListModule
+    MatListModule,
+    MatExpansionModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatSidenavModule,
@@ -22,7 +36,14 @@ import {MatListModule} from '@angular/material/list';
     FlexLayoutModule,
     MatIconModule,
     MatButtonModule,
-    MatListModule
+    MatListModule,
+    MatExpansionModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ]
 })
 

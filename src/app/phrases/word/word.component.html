@@ -1,0 +1,6 @@
+<mat-chip (click)="onChipClick()"
+          [ngClass]="{'word__chip': !isDisabled,
+                      'word__chip--not-known': !isKnown && !isDisabled}"
+                      matTooltip="Available after login"
+                      [matTooltipDisabled]="!isDisabled"
+                      [disabled]="isDisabled">{{word.english}}</mat-chip>

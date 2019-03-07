@@ -1,0 +1,13 @@
+<mat-expansion-panel (afterExpand)="makeWordsUnknown()">
+  <mat-expansion-panel-header collapsedHeight='*'
+                              expandedHeight="*"
+                              class="phrase__origin">
+    {{ phrase.russian }}
+  </mat-expansion-panel-header>
+  <p class="phrase__translation">{{ phrase.english }}</p>
+  <mat-chip-list>
+    <app-word *ngFor="let word of words"
+              [word]="word"
+              [onOpenedPanel]="openedPanel.asObservable()"></app-word>
+  </mat-chip-list>
+</mat-expansion-panel>

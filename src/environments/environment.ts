@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyAzWRiFDIVeAGJRZfPtAYr6CzsqwWaTK-g",
+    authDomain: "english-words-trainer.firebaseapp.com",
+    databaseURL: "https://english-words-trainer.firebaseio.com",
+    projectId: "english-words-trainer",
+    storageBucket: "english-words-trainer.appspot.com",
+    messagingSenderId: "584816344379"
+  }
 };
 
 /*

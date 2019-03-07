@@ -1,0 +1,17 @@
+.word__chip {
+  cursor: pointer;
+  background-color: #69f0ae;
+  color: rgba(0,0,0,.87);
+}
+
+.word__chip--not-known {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.word__chip--disabled {
+  color: #fff;
+  background-color: #616161;
+  cursor: default;
+  opacity: .4;
+}

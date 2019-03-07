@@ -1,0 +1,11 @@
+<section class="phrases-list">
+  <mat-accordion #myaccordion="matAccordion" multi="true">
+    <app-phrase *ngFor="let phrase of phrases$ | async" [phrase]="phrase"></app-phrase>
+  </mat-accordion>
+  <mat-action-row>
+    <button mat-raised-button
+            class="phrases-list__btn"
+            *ngIf="phrases$ | async"
+            (click)="getNextPhrases()">NEXT PHRASES</button>
+  </mat-action-row>
+</section>

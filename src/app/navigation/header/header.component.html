@@ -5,15 +5,39 @@
     </button>
   </div>
   <div>
-    <a class="header__logo mat-subheading-2">English Words Trainer</a>
+    <a class="header__logo mat-subheading-2"
+       routerLink="">English Words Trainer</a>
   </div>
   <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs fxShow>
     <ul fxLayout class="header__menu">
       <li>
-        <a class="header__link" mat-button>Manage words</a>
+        <a class="header__link"
+           routerLink="/dictionary"
+           routerLinkActive="header__link--active"
+           *ngIf="isAuth$ | async"
+           mat-button>Dictionary</a>
       </li>
       <li>
-        <a class="header__link" mat-button>Signup</a>
+        <a class="header__link"
+           routerLink="/login"
+           routerLinkActive="header__link--active"
+           *ngIf="!(isAuth$ | async)"
+           mat-button>Login</a>
+      </li>
+      <li>
+        <a class="header__link"
+           routerLink="/signup"
+           routerLinkActive="header__link--active"
+           *ngIf="!(isAuth$ | async)"
+           mat-button>Signup</a>
+      </li>
+      <li>
+        <a class="header__link"
+           *ngIf="isAuth$ | async"
+           (click)="onLogout()"
+           mat-button><i class="material-icons">
+          exit_to_app
+        </i></a>
       </li>
     </ul>
   </div>

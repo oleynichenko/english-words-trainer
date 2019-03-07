@@ -1,0 +1,10 @@
+.phrases-list {
+  max-width: 650px;
+  margin: 88px auto 0;
+}
+
+.phrases-list__btn {
+  margin-top: 32px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
