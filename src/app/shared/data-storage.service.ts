@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import {zip} from 'rxjs';
+import {filter, first, map, switchMap, take, tap} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
 
-import {Word} from './models/word.model';
 import {Phrase} from './models/phrase.model';
-import {Subject, zip} from 'rxjs';
-import {map, take, tap} from 'rxjs/operators';
-
+import {PhrasesIdsLoaded, PhrasesLoaded, WordsLoaded} from '../phrases/store/phrases.actions';
+import {selectPhrasesIds} from '../store/app.selectors';
+import {AppState} from '../store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DataStorageService {
-phrasesChanged = new Subject<Phrase[]>();
-wordsChanged = new Subject<Word[]>();
-
   phrasesNumber = 5;
-  phrasesIds = [];
 
   static getUnique(arr) {
     return arr.reduce((resArr, id) => {
@@ -27,7 +25,8 @@ wordsChanged = new Subject<Word[]>();
       return resArr;
     }, []);
   }
-  // get q numbers from 0 to range (not incliding range)
+
+  // get q numbers from 0 to range (not including range)
   static getRandomNumbers(q, range) {
     const numbers = [];
 
@@ -42,40 +41,42 @@ wordsChanged = new Subject<Word[]>();
     return numbers;
   }
 
-  constructor(private db: AngularFirestore) {}
+  constructor(private db: AngularFirestore,
+              private store: Store<AppState>) {}
 
   public getPhrasesFromDb() {
-    if (this.phrasesIds.length === 0) {
-      this.db.collection('phrases').snapshotChanges().pipe(
-        map((items) => {
-          const ids = [];
-
-          items.forEach(function (item: any) {
-            ids.push(item.payload.doc.id);
+    this.store.select(selectPhrasesIds).pipe(
+      tap(phrasesIds => {
+        if (phrasesIds.length === 0) {
+          this.queryPhrasesIds().subscribe((ids) => {
+            this.store.dispatch(new PhrasesIdsLoaded(ids));
           });
-
-          return ids;
-        }),
-        take(1)
-      )
-      .subscribe((ids) => {
-        this.phrasesIds = ids;
-        this.queryPhrases();
-      });
-    } else {
-      this.queryPhrases();
-    }
+        }
+      }),
+      filter(phrasesIds => phrasesIds.length !== 0),
+      switchMap((phrasesIds) => {
+        return zip(...this.formPhrasesQueries(phrasesIds, this.phrasesNumber));
+      }),
+      first()
+    ).subscribe((phrases: Phrase[]) => {
+      this.store.dispatch(new PhrasesLoaded(phrases));
+      this.getWords(phrases);
+    });
   }
 
-  private queryPhrases() {
-    zip(...this.formPhrasesQueries(this.phrasesIds, this.phrasesNumber))
-      .pipe(
-        take(1)
-      )
-      .subscribe((phrases: any) => {
-        this.phrasesChanged.next(phrases);
-        this.getWords(phrases);
-      });
+  private queryPhrasesIds() {
+    return this.db.collection('phrases').snapshotChanges().pipe(
+      map((items) => {
+        const ids = [];
+
+        items.forEach(function (item: any) {
+          ids.push(item.payload.doc.id);
+        });
+
+        return ids;
+      }),
+      first()
+    );
   }
 
   getWords(phrases) {
@@ -97,10 +98,9 @@ wordsChanged = new Subject<Word[]>();
         map((wordsArr) => {
           return wordsArr.map(item => item[0]);
         })
-
       )
       .subscribe(words => {
-        this.wordsChanged.next(words);
+        this.store.dispatch(new WordsLoaded(words));
       });
   }
 

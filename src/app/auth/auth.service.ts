@@ -7,7 +7,7 @@ import {User} from 'firebase';
 import {AuthData} from './auth-data.model';
 import {AppState} from '../store/app.reducer';
 import { SetAuthenticated, SetUnauthenticated } from './store/auth.actions';
-import {UiService} from '../shared/ui.service';
+import {UiService} from '../shared/ui/ui.service';
 import {StartLoading, StopLoading} from '../shared/ui/ui.actions';
 
 @Injectable()

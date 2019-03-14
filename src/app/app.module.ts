@@ -5,6 +5,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { FirestoreSettingsToken} from '@angular/fire/firestore';
 import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
@@ -19,7 +20,8 @@ import { DictionaryComponent } from './dictionary/dictionary.component';
 import {AuthModule} from './auth/auth.module';
 import {appReducers} from './store/app.reducer';
 import {AuthService} from './auth/auth.service';
-import {UiService} from './shared/ui.service';
+import {UiService} from './shared/ui/ui.service';
+import {PhrasesEffects} from './phrases/store/phrases.effects';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import {UiService} from './shared/ui.service';
     MaterialModule,
     AppRoutingModule,
     StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot([PhrasesEffects]),
     AuthModule
   ],
   providers: [

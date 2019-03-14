@@ -1,7 +1,12 @@
+import {Observable} from 'rxjs';
 import { Component, OnInit } from '@angular/core';
+import {Store} from '@ngrx/store';
+
 import {DataStorageService} from '../shared/data-storage.service';
 import {Phrase} from '../shared/models/phrase.model';
-import {Observable} from 'rxjs';
+import {PhrasesRequested} from './store/phrases.actions';
+import {selectAllPhrases} from '../store/app.selectors';
+import {AppState} from '../store/app.reducer';
 
 @Component({
   selector: 'app-phrases',
@@ -11,14 +16,14 @@ import {Observable} from 'rxjs';
 export class PhrasesComponent implements OnInit {
   phrases$: Observable<Phrase[]>;
 
-  constructor(private dataStorageService: DataStorageService) { }
+  constructor(private dataStorageService: DataStorageService,
+              private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.dataStorageService.getPhrasesFromDb();
-    this.phrases$ = this.dataStorageService.phrasesChanged;
+    this.phrases$ = this.store.select(selectAllPhrases);
   }
 
   getNextPhrases() {
-    this.dataStorageService.getPhrasesFromDb();
+    this.store.dispatch(new PhrasesRequested());
   }
 }

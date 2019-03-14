@@ -3,8 +3,10 @@ import {Subject, Subscription} from 'rxjs';
 
 
 import {Phrase} from '../../shared/models/phrase.model';
-import {DataStorageService} from '../../shared/data-storage.service';
 import {Word} from '../../shared/models/word.model';
+import {Store} from '@ngrx/store';
+import {selectWords} from '../../store/app.selectors';
+import {AppState} from '../../store/app.reducer';
 
 @Component({
   selector: 'app-phrase',
@@ -20,10 +22,10 @@ export class PhraseComponent implements OnInit, OnDestroy {
   words: Word[] = [];
   subscription: Subscription;
 
-  constructor(private dataStorageService: DataStorageService) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.subscription = this.dataStorageService.wordsChanged
+    this.subscription = this.store.select(selectWords)
       .subscribe((words) => {
         this.words = words.filter((word) => {
           return this.phrase.words.indexOf(word.id) !== -1;
